@@ -16,3 +16,7 @@ You can find the official downloads here: https://modrinth.com/mod/cactipvp
 This is my first mod, so please keep in mind that it might have some bugs. 
 
 Regarding development, AI was used a bit during this project. However, it was strictly used as a tool to help find the right internal classes and speed up debugging. It was not used for "vibe coding" or just blindly generating the mod's logic.
+
+
+## Thanks
+thanks are available in the thanks.md file
