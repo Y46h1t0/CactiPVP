@@ -1,0 +1,92 @@
+plugins {
+    // ID NUOVO per MC 26.1 — NON usare 'fabric-loom' né 'fabric-loom-remap'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+// ── Metadati del progetto ─────────────────────────────────────────────────────
+version = project.mod_version
+group   = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+// ── Split environment (client-only addon) ────────────────────────────────────
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        // Usa il tuo modid esatto (quello in fabric.mod.json)
+        "cactuspvpaddon" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+// ── Repository aggiuntivi (Loom aggiunge già i suoi in automatico) ────────────
+repositories {
+    // Nessun repo extra necessario per le dipendenze di base.
+    // Se in futuro aggiungi mod da CurseForge/Modrinth Maven, aggiungili qui.
+}
+
+// ── Dipendenze ────────────────────────────────────────────────────────────────
+dependencies {
+    // MC 26.1 è già un-obfuscated: Loom scarica il jar direttamente,
+    // NON ci sono mappature da specificare — la riga 'mappings' va OMESSA.
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    // Fabric Loader: usa 'implementation', NON 'modImplementation'
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API: idem, 'implementation' standard
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // ── Cactus Mod locale (/libs/cactus-0.13.jar) ──────────────────────────
+    // In MC 26.1 non esiste più 'modImplementation'.
+    // Il jar locale va incluso con 'implementation' + fileTree.
+    // Se il jar ha bisogno di essere sul classpath solo a compile-time: usa 'compileOnly'.
+    implementation files('libs/cactus-0.13.jar')
+
+    // Se vuoi che Loom lo includa anche nelle run configuration di gioco
+    // (così lo vedi attivo quando lanci il client da IDE), aggiungi anche:
+    // runtimeOnly files('libs/cactus-0.13.jar')
+    // (le due righe NON si escludono, ma 'implementation' include già runtime)
+}
+
+// ── Compilazione ─────────────────────────────────────────────────────────────
+tasks.withType(JavaCompile).configureEach {
+    // MC 26.1 richiede Java 25 come minimo
+    it.options.release = 25
+}
+
+// ── Iniezione della versione in fabric.mod.json ───────────────────────────────
+processResources {
+    def props = [
+            version: project.version,
+            loader_version: project.loader_version,
+            minecraft_version: project.minecraft_version
+    ]
+    inputs.properties props
+
+    filesMatching("fabric.mod.json") {
+        expand props
+    }
+}
+
+// ── Jar ───────────────────────────────────────────────────────────────────────
+java {
+    // Genera automaticamente il sources jar con './gradlew build'
+    withSourcesJar()
+    // Specifica compatibilità sorgente/target Java 25
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+// In MC 26.1 NON si usa più 'remapJar': il task 'jar' standard è sufficiente
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+}

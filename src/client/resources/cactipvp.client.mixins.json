@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.yaghito.cactipvp.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "ItemInHandRendererMixin",
+    "ClientLevelMixin",
+    "ScreenEffectRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

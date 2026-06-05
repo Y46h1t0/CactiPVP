@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        // Repository ufficiale di Fabric Loom — DEVE essere il primo
+        maven {
+            name = 'Fabric'
+            url  = 'https://maven.fabricmc.net/'
+        }
+        // Maven Central per altri plugin Gradle standard
+        mavenCentral()
+        // Gradle Plugin Portal (per maven-publish, java, ecc.)
+        gradlePluginPortal()
+    }
+}
+
+// Risoluzione delle dipendenze di tutti i sottoprogetti
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url  = 'https://maven.fabricmc.net/'
+        }
+        // Repository di Mojang per i jar di Minecraft
+        maven {
+            name = 'Mojang'
+            url  = 'https://libraries.minecraft.net/'
+        }
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'cactus-pvp-addon'

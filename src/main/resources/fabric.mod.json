@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "cactipvp",
+  "version": "${version}",
+  "name": "CactiPVP",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cactipvp/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.yaghito.cactipvp.client.CactipvpClient",
+      "me.yaghito.cactipvp.client.CustomCrosshairClient"
+    ],
+    "cactus": [
+      "me.yaghito.cactipvp.Cactipvp"
+    ]
+  },
+  "mixins": [
+    "cactipvp.mixins.json",
+    {
+      "config": "cactipvp.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "~26.1"
+  }
+}

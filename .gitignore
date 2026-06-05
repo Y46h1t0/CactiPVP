@@ -1,0 +1,13 @@
+# Gradle files to ignore
+.gradle/
+build/
+
+# IDE files to ignore
+.idea/
+.vscode/
+
+# Local run/test directories
+/run/
+
+# Log files
+*.log
